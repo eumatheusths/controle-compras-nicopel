@@ -11,29 +11,31 @@ const handler = NextAuth({
         password: { label: "Senha", type: "password" }
       },
       async authorize(credentials) {
-        console.log("--- TENTATIVA DE LOGIN ---");
-        console.log("Email recebido:", credentials?.email);
-
+        console.log("--- TENTATIVA DE LOGIN INICIADA ---");
+        
         if (!credentials?.email || !credentials?.password) {
-          console.log("Erro: Campos vazios");
+          console.log("ERRO: Email ou senha não fornecidos.");
           return null;
         }
 
-        try {
-          console.log("Buscando usuários na planilha...");
-          const usuarios = await getUsuarios();
-          console.log(`Sucesso! ${usuarios.length} usuários encontrados.`);
+        console.log("1. Email recebido:", credentials.email);
 
-          // Log para ver o que veio da planilha (só para debug, cuidado com senhas reais)
-          // console.log("Usuarios na base:", JSON.stringify(usuarios));
+        try {
+          console.log("2. Conectando na planilha...");
+          const usuarios = await getUsuarios();
+          console.log(`3. Planilha lida. ${usuarios.length} usuários encontrados.`);
+
+          // Normaliza os textos para evitar erro de espaço ou maiúscula
+          const emailInput = credentials.email.trim().toLowerCase();
+          const senhaInput = credentials.password.trim();
 
           const user = usuarios.find(u => 
-            u.email.trim().toLowerCase() === credentials.email.trim().toLowerCase() && 
-            u.senha.trim() === credentials.password.trim()
+            u.email.trim().toLowerCase() === emailInput && 
+            u.senha.trim() === senhaInput
           );
 
           if (user) {
-            console.log("LOGIN APROVADO para:", user.nome);
+            console.log("4. SUCESSO: Usuário encontrado:", user.nome);
             return {
               id: user.email,
               name: user.nome,
@@ -41,11 +43,11 @@ const handler = NextAuth({
             };
           }
 
-          console.log("FALHA: Usuário não encontrado ou senha incorreta.");
+          console.log("4. FALHA: Usuário não encontrado ou senha incorreta.");
           return null;
 
         } catch (error) {
-          console.error("ERRO CRÍTICO AO ACESSAR PLANILHA:", error);
+          console.error("ERRO CRÍTICO NO SISTEMA:", error);
           return null;
         }
       }
@@ -53,14 +55,13 @@ const handler = NextAuth({
   ],
   pages: {
     signIn: '/login',
-    error: '/login', // Se der erro, volta pro login em vez de página de erro feia
+    error: '/login', // Redireciona para login se der erro
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 dias
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true, // Ativa logs detalhados do NextAuth
+  debug: true, // Ativa logs do NextAuth
 });
 
 export { handler as GET, handler as POST };
