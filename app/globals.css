@@ -3,22 +3,40 @@
 @tailwind utilities;
 
 :root {
-  --neon-green: #00ffa3;
-  --dark-bg: #050505;
-  --panel-bg: #111111;
+  /* --- PALETA DE CORES CORPORATIVA --- */
+  
+  /* Cor Principal (Botões e Destaques) - Azul Royal */
+  --primary: #2563eb;       
+  --primary-hover: #1d4ed8; 
+  
+  /* Fundos */
+  --bg-body: #f1f5f9;       /* Cinza muito suave (Slate-100) */
+  --bg-panel: #ffffff;      /* Branco Puro */
+  --bg-sidebar: #0f172a;    /* Azul Petróleo Escuro (Profissional) */
+
+  /* Textos */
+  --text-main: #1e293b;     /* Slate-800 */
+  --text-muted: #64748b;    /* Slate-500 */
+  --text-inverse: #ffffff;  /* Texto para fundos escuros */
+
+  /* Bordas */
+  --border: #e2e8f0;        /* Cinza claro */
+  
+  /* Layout */
   --sidebar-width: 260px;
 }
 
-/* 1. Força o fundo preto e texto claro no site todo */
+/* 1. Reset Global */
 body {
-  background-color: var(--dark-bg);
-  color: #e2e8f0;
+  background-color: var(--bg-body);
+  color: var(--text-main);
   margin: 0;
   padding: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 2. Estrutura do Layout (Isso garante que o menu não quebre) */
+/* 2. Estrutura do Layout (Blindada contra erros do Tailwind) */
 .layout-wrapper {
   display: flex;
   min-height: 100vh;
@@ -28,8 +46,8 @@ body {
 /* Menu Lateral Fixo */
 .sidebar-container {
   width: var(--sidebar-width);
-  background-color: #000000;
-  border-right: 1px solid #1f1f1f;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid #1e293b;
   position: fixed;
   height: 100vh;
   top: 0;
@@ -37,48 +55,88 @@ body {
   z-index: 50;
   display: flex;
   flex-direction: column;
+  color: var(--text-inverse);
 }
 
-/* Área de Conteúdo (empurrada para a direita) */
+/* Área de Conteúdo */
 .main-content {
   margin-left: var(--sidebar-width);
   flex: 1;
   padding: 2rem;
-  background-color: var(--dark-bg);
+  background-color: var(--bg-body);
   min-height: 100vh;
 }
 
-/* 3. Estilos Visuais "Tech" (Funciona mesmo sem Tailwind) */
-.card-tech {
-  background-color: var(--panel-bg);
-  border: 1px solid #222;
+/* 3. Componentes de UI (Cards, Botões, Inputs) */
+
+/* Cartões (Cards) */
+.card-panel {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
 }
 
-.text-neon {
-  color: var(--neon-green);
+.card-panel:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-.btn-neon {
-  background-color: var(--neon-green);
-  color: #000;
-  font-weight: bold;
+/* Botões Primários */
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
 }
 
-.btn-neon:hover {
-  background-color: #00dd8d;
-  box-shadow: 0 0 15px var(--neon-green);
+.btn-primary:hover {
+  background-color: var(--primary-hover);
 }
 
-/* Correção para Inputs no Chrome ficarem escuros */
+/* Inputs e Formulários */
 input, select, textarea {
-  background-color: #0a0a0a !important;
-  color: white !important;
-  border: 1px solid #333 !important;
+  background-color: var(--bg-panel) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  padding: 0.75rem;
+  width: 100%;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Correção para o Chrome não deixar o input amarelo/preto */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #1e293b !important;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link-accent {
+  color: var(--primary);
+  font-weight: 500;
+}
+.link-accent:hover {
+  text-decoration: underline;
 }
