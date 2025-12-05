@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, Loader2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Lock, Mail, Loader2, AlertCircle, Package } from 'lucide-react';
 
 export default function Login() {
   const router = useRouter();
@@ -25,80 +25,67 @@ export default function Login() {
       });
 
       if (result?.error) {
-        setError('Credenciais inválidas.');
+        setError('Credenciais inválidas. Verifique e-mail e senha.');
         setLoading(false);
       } else {
         router.push('/');
         router.refresh();
       }
     } catch (err) {
-      setError('Erro de conexão.');
+      setError('Erro de conexão. Tente novamente.');
       setLoading(false);
     }
   };
 
-  // Componente do Logo "N" estilizado
-  const NicopelLogo = () => (
-    <div className="w-20 h-20 rounded-full bg-black border-2 border-[#00ffa3] flex items-center justify-center mx-auto mb-6 glow-tech shadow-[0_0_30px_-5px_#00ffa3]">
-      <span className="text-4xl font-extrabold text-[#00ffa3] tracking-tighter">
-        N.
-      </span>
-    </div>
-  );
-
   return (
-    // Fundo Tecnológico com gradiente sutil
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#050505] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0a1f16] via-[#050505] to-[#050505]">
+    // Fundo cinza claro, centralizado
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       
-      {/* Card de Login "Glassmorphism" */}
-      <div className="bg-[#111111]/80 backdrop-blur-xl w-full max-w-md rounded-3xl p-8 shadow-2xl border border-[#00ffa3]/30 relative overflow-hidden">
+      {/* Card Branco flutuante */}
+      <div className="bg-white w-full max-w-md rounded-2xl p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-200">
         
-        {/* Efeito de luz decorativa no topo */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-[#00ffa3] blur-sm rounded-b-full opacity-70"></div>
-
-        <div className="text-center mb-8 relative z-10">
-          <NicopelLogo />
-          <h1 className="text-3xl font-bold text-white tracking-wide">
-            NICOPEL
-            <span className="text-[#00ffa3] text-sm block font-normal tracking-widest mt-1 uppercase opacity-80">
-              Sistema de Compras
-            </span>
-          </h1>
+        <div className="text-center mb-8">
+          <div className="bg-corporate-blue w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
+            <Package className="text-white w-8 h-8" />
+          </div>
+          <h1 className="text-2xl font-bold text-slate-800">Acesso Nicopel</h1>
+          <p className="text-slate-500 mt-2">Entre com suas credenciais corporativas</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-950/50 border border-red-500/50 rounded-xl flex items-center gap-3 text-red-200 text-sm animate-pulse">
-            <AlertTriangle size={20} className="text-red-500" />
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 text-red-700 text-sm">
+            <AlertCircle size={20} className="flex-shrink-0" />
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
-          <div className="group">
-            <label className="block text-xs font-medium text-[#00ffa3] uppercase tracking-wider mb-2 ml-1">ID Corporativo</label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">E-mail</label>
             <div className="relative">
-              <Mail className="absolute left-4 top-3.5 text-slate-500 group-focus-within:text-[#00ffa3] transition-colors" size={20} />
+              <Mail className="absolute left-3 top-3.5 text-slate-400" size={20} />
+              {/* Input padronizado com Tailwind */}
               <input 
                 type="email" 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-12 p-3.5 bg-[#0a0a0a] border border-slate-800 text-slate-200 rounded-xl focus:ring-2 focus:ring-[#00ffa3]/50 focus:border-[#00ffa3] outline-none transition-all placeholder:text-slate-600" 
-                placeholder="usuario@nicopel.com.br" 
+                className="w-full pl-10 p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-corporate-blue focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400" 
+                placeholder="seu.nome@nicopel.com" 
               />
             </div>
           </div>
           
-          <div className="group">
-            <label className="block text-xs font-medium text-[#00ffa3] uppercase tracking-wider mb-2 ml-1">Chave de Acesso</label>
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">Senha</label>
             <div className="relative">
-              <Lock className="absolute left-4 top-3.5 text-slate-500 group-focus-within:text-[#00ffa3] transition-colors" size={20} />
+              <Lock className="absolute left-3 top-3.5 text-slate-400" size={20} />
               <input 
                 type="password" 
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-12 p-3.5 bg-[#0a0a0a] border border-slate-800 text-slate-200 rounded-xl focus:ring-2 focus:ring-[#00ffa3]/50 focus:border-[#00ffa3] outline-none transition-all placeholder:text-slate-600 font-mono" 
+                className="w-full pl-10 p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-corporate-blue focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400" 
                 placeholder="••••••••" 
               />
             </div>
@@ -107,25 +94,23 @@ export default function Login() {
           <button 
             type="submit" 
             disabled={loading}
-            className={`w-full py-4 rounded-xl font-bold text-black transition-all relative overflow-hidden group flex items-center justify-center gap-2 mt-8 ${
-              loading ? 'bg-slate-600 cursor-not-allowed opacity-70' : 'bg-[#00ffa3] hover:bg-[#00dd8d] hover:shadow-[0_0_20px_-3px_#00ffa3] hover:scale-[1.02]'
+            // Botão com a cor corporativa definida no config
+            className={`w-full py-3.5 rounded-xl font-bold text-white transition-all shadow-md flex items-center justify-center gap-2 mt-6 ${
+              loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-corporate-blue hover:bg-corporate-blue-dark hover:shadow-lg'
             }`}
           >
             {loading ? (
               <>
-                <Loader2 className="animate-spin" size={20} /> Autenticando...
+                <Loader2 className="animate-spin" size={20} /> Acessando...
               </>
             ) : (
-              <>
-                Conectar Sistema <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </>
+              'Entrar no Sistema'
             )}
           </button>
         </form>
-
-        <div className="mt-8 text-center text-xs text-slate-500 flex justify-between items-center relative z-10">
-          <p>NICOPEL v2.0</p>
-          <p className="flex items-center gap-1"><Lock size={12} /> Conexão Segura</p>
+        
+        <div className="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-400">
+          &copy; 2025 Nicopel Embalagens. Todos os direitos reservados.
         </div>
       </div>
     </div>

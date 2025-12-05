@@ -1,23 +1,24 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // Garante que o Tailwind olhe para TODOS os arquivos
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}", // <--- ESSA LINHA É A MÁGICA QUE FALTA
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
+      // Definindo nossas cores corporativas
       colors: {
-        nicopel: {
-          green: '#00ffa3', // Nosso verde neon
-          dark: '#050505',  // Nosso fundo preto
+        corporate: {
+          blue: '#2563eb',       // Azul Royal Principal
+          'blue-dark': '#1e40af', // Azul mais escuro para hover
+          slate: '#0f172a',      // Cor do Sidebar (quase preto azulado)
         }
+      },
+      fontFamily: {
+        // Garante uma fonte limpa padrão do sistema
+        sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', "Segoe UI", 'Roboto', "Helvetica Neue", 'Arial', 'sans-serif'],
       }
     },
   },

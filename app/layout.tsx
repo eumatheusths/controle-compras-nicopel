@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
   title: "Sistema Nicopel",
-  description: "Gestão de Compras",
+  description: "Gestão de Compras e Estoque",
 };
 
 export default function RootLayout({
@@ -17,15 +14,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning={true}>
-      <body className={inter.className}>
-        <div className="layout-wrapper">
-          {/* Menu Lateral Seguro */}
-          <div className="sidebar-container">
-            <Sidebar />
-          </div>
+      {/* O fundo base já está definido no globals.css via @apply */}
+      <body>
+        <div className="flex min-h-screen">
+          <Sidebar />
           
-          {/* Conteúdo Principal Seguro */}
-          <main className="main-content">
+          {/* ml-64 = margem esquerda de 16rem (256px) para dar espaço ao menu fixo 
+             flex-1 = ocupa o resto do espaço
+             min-h-screen = garante altura total
+          */}
+          <main className="flex-1 ml-64 bg-slate-50 min-h-screen">
             {children}
           </main>
         </div>
