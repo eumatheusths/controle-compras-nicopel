@@ -2,34 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definindo nossas cores personalizadas */
 :root {
-  /* Verde Neon Tecnológico */
-  --nicopel-green: #00ffa3; 
-  /* Fundo Preto Profundo */
-  --nicopel-dark: #050505;
-  /* Fundo de Paineis (um pouco mais claro que o preto total) */
-  --nicopel-panel: #111111;
+  --neon-green: #00ffa3;
+  --dark-bg: #050505;
+  --panel-bg: #111111;
+  --sidebar-width: 260px;
 }
 
+/* 1. Força o fundo preto e texto claro no site todo */
 body {
-  /* Aplica o tema escuro no site todo */
-  background-color: var(--nicopel-dark);
-  color: #e2e8f0; /* Texto claro padrão (slate-200) */
-  font-feature-settings: "rlig" 1, "calt" 1;
+  background-color: var(--dark-bg);
+  color: #e2e8f0;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Classe utilitária para um brilho verde */
-.glow-tech {
-  box-shadow: 0 0 20px -5px var(--nicopel-green);
+/* 2. Estrutura do Layout (Isso garante que o menu não quebre) */
+.layout-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
 }
 
-/* Input autofill do Chrome ficando feio no tema escuro - correção */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #111111 inset !important;
-    -webkit-text-fill-color: #00ffa3 !important;
-    caret-color: #00ffa3;
+/* Menu Lateral Fixo */
+.sidebar-container {
+  width: var(--sidebar-width);
+  background-color: #000000;
+  border-right: 1px solid #1f1f1f;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Área de Conteúdo (empurrada para a direita) */
+.main-content {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 2rem;
+  background-color: var(--dark-bg);
+  min-height: 100vh;
+}
+
+/* 3. Estilos Visuais "Tech" (Funciona mesmo sem Tailwind) */
+.card-tech {
+  background-color: var(--panel-bg);
+  border: 1px solid #222;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+.text-neon {
+  color: var(--neon-green);
+}
+
+.btn-neon {
+  background-color: var(--neon-green);
+  color: #000;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-neon:hover {
+  background-color: #00dd8d;
+  box-shadow: 0 0 15px var(--neon-green);
+}
+
+/* Correção para Inputs no Chrome ficarem escuros */
+input, select, textarea {
+  background-color: #0a0a0a !important;
+  color: white !important;
+  border: 1px solid #333 !important;
 }
