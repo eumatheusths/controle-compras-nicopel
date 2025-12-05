@@ -6,7 +6,14 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {}, // Deixamos vazio para usar o padrão (blue-600, slate-900, etc)
+    extend: {
+      colors: {
+        corporate: {
+          blue: '#2563eb',       // Azul Royal
+          slate: '#0f172a',      // Fundo do Menu
+        }
+      },
+    },
   },
   plugins: [],
 };

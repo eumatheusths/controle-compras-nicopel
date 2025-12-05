@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning={true}>
-      <body className="bg-gray-100 text-gray-900 font-sans antialiased">
+      <body className="bg-slate-50 text-slate-800 font-sans antialiased">
         <div className="flex min-h-screen">
           <Sidebar />
           <main className="flex-1 ml-64 min-h-screen">

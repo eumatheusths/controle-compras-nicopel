@@ -1,7 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 
-// --- INTERFACES ---
 export interface Compra {
   id: string;
   rowIndex: number;
@@ -25,19 +24,16 @@ export interface Usuario {
   funcao: string;
 }
 
-// --- AUTENTICAÇÃO SEGURA ---
+// FUNÇÃO DE CONEXÃO SEGURA (BLINDADA CONTRA ERROS DE BUILD)
 const getDoc = async () => {
-  // 1. Carrega as variáveis de forma segura
-  // O "|| ''" garante que se for undefined, vira texto vazio e não quebra o replace
+  // O "|| ''" evita que o código quebre se a variável não existir no build
   const rawKey = process.env.GOOGLE_PRIVATE_KEY || '';
   const key = rawKey.replace(/\\n/g, '\n');
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '';
   const sheetId = process.env.GOOGLE_SHEET_ID || '';
 
-  // 2. Se as credenciais estiverem vazias (durante o build), para por aqui sem erro
   if (!key || !email || !sheetId) {
-    // Retorna null ou lança um erro controlado que não quebra o build
-    throw new Error("Credenciais do Google não configuradas corretamente.");
+    throw new Error("Credenciais do Google ausentes. Verifique o .env.local ou Vercel Envs.");
   }
 
   const serviceAccountAuth = new JWT({
@@ -51,8 +47,6 @@ const getDoc = async () => {
   return doc;
 };
 
-// --- FUNÇÕES DE DADOS ---
-
 export async function getCompras(): Promise<Compra[]> {
   try {
     const doc = await getDoc();
@@ -61,7 +55,6 @@ export async function getCompras(): Promise<Compra[]> {
 
     return rows.map((row, index) => {
       const cleanMoney = (val: string) => parseFloat((val || '0').replace(/[R$\s.]/g, '').replace(',', '.'));
-      
       return {
         id: index.toString(),
         rowIndex: index,
@@ -79,8 +72,8 @@ export async function getCompras(): Promise<Compra[]> {
       };
     });
   } catch (error) {
-    console.error("Erro ao buscar compras (pode ser ignorado no build):", error);
-    return []; // Retorna lista vazia para o build passar
+    console.error("Build safe mode: Erro ao ler compras", error);
+    return []; // Retorna vazio para não travar o build
   }
 }
 
@@ -89,19 +82,16 @@ export async function updateCompra(rowIndex: number, data: Partial<Compra>) {
     const doc = await getDoc();
     const sheet = doc.sheetsByIndex[0];
     const rows = await sheet.getRows();
-    
     if (rows[rowIndex]) {
       const row = rows[rowIndex];
       if (data.status) row.set('Situacão Item', data.status);
       if (data.descricao) row.set('Descrição', data.descricao);
       if (data.empresa) row.set('Empresa', data.empresa);
-      
       await row.save();
       return true;
     }
     return false;
   } catch (error) {
-    console.error("Erro ao atualizar:", error);
     return false;
   }
 }
@@ -111,7 +101,6 @@ export async function getUsuarios(): Promise<Usuario[]> {
     const doc = await getDoc();
     const sheet = doc.sheetsByTitle['Usuarios'] || doc.sheetsByIndex[1];
     if (!sheet) return [];
-    
     const rows = await sheet.getRows();
     return rows.map((row) => ({
       nome: row.get('Nome') || '',
@@ -120,7 +109,6 @@ export async function getUsuarios(): Promise<Usuario[]> {
       funcao: row.get('Funcao') || 'User',
     }));
   } catch (error) {
-    console.error("Erro ao buscar usuários (pode ser ignorado no build):", error);
     return [];
   }
 }
