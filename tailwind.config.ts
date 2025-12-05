@@ -6,9 +6,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      // Deixando vazio para garantir que ele use as cores padrão
-    },
+    extend: {}, // Deixamos vazio para usar o padrão (blue-600, slate-900, etc)
   },
   plugins: [],
 };
