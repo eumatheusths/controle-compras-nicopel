@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUsuarios } from "@/lib/googleSheets"; // Importa a função que lê sua planilha
+import { getUsuarios } from "@/lib/googleSheets";
 
 const handler = NextAuth({
   providers: [
@@ -11,49 +11,56 @@ const handler = NextAuth({
         password: { label: "Senha", type: "password" }
       },
       async authorize(credentials) {
-        // 1. Validação básica: se não digitou nada, bloqueia.
+        console.log("--- TENTATIVA DE LOGIN ---");
+        console.log("Email recebido:", credentials?.email);
+
         if (!credentials?.email || !credentials?.password) {
+          console.log("Erro: Campos vazios");
           return null;
         }
 
         try {
-          // 2. Busca a lista atualizada de usuários da planilha
+          console.log("Buscando usuários na planilha...");
           const usuarios = await getUsuarios();
+          console.log(`Sucesso! ${usuarios.length} usuários encontrados.`);
 
-          // 3. Procura o usuário (ignorando maiúsculas/minúsculas no email)
+          // Log para ver o que veio da planilha (só para debug, cuidado com senhas reais)
+          // console.log("Usuarios na base:", JSON.stringify(usuarios));
+
           const user = usuarios.find(u => 
-            u.email.toLowerCase() === credentials.email.toLowerCase() && 
-            u.senha === credentials.password
+            u.email.trim().toLowerCase() === credentials.email.trim().toLowerCase() && 
+            u.senha.trim() === credentials.password.trim()
           );
 
-          // 4. Se achou, libera o acesso
           if (user) {
+            console.log("LOGIN APROVADO para:", user.nome);
             return {
               id: user.email,
               name: user.nome,
               email: user.email,
-              // Você pode passar a função também se quiser controlar permissões depois
-              // role: user.funcao 
             };
           }
 
-          // Se não achou ou senha errada
+          console.log("FALHA: Usuário não encontrado ou senha incorreta.");
           return null;
 
         } catch (error) {
-          console.error("Erro ao tentar logar:", error);
+          console.error("ERRO CRÍTICO AO ACESSAR PLANILHA:", error);
           return null;
         }
       }
     })
   ],
   pages: {
-    signIn: '/login', // Redireciona para sua tela personalizada se der erro ou pedir login
+    signIn: '/login',
+    error: '/login', // Se der erro, volta pro login em vez de página de erro feia
   },
   session: {
-    strategy: "jwt", // Usa cookies seguros (padrão)
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 dias
   },
-  secret: process.env.NEXTAUTH_SECRET, // Lê a chave do .env.local
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: true, // Ativa logs detalhados do NextAuth
 });
 
 export { handler as GET, handler as POST };
