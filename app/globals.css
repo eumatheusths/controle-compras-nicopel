@@ -1,26 +1,35 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Definindo nossas cores personalizadas */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Verde Neon Tecnológico */
+  --nicopel-green: #00ffa3; 
+  /* Fundo Preto Profundo */
+  --nicopel-dark: #050505;
+  /* Fundo de Paineis (um pouco mais claro que o preto total) */
+  --nicopel-panel: #111111;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Aplica o tema escuro no site todo */
+  background-color: var(--nicopel-dark);
+  color: #e2e8f0; /* Texto claro padrão (slate-200) */
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Classe utilitária para um brilho verde */
+.glow-tech {
+  box-shadow: 0 0 20px -5px var(--nicopel-green);
+}
+
+/* Input autofill do Chrome ficando feio no tema escuro - correção */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #111111 inset !important;
+    -webkit-text-fill-color: #00ffa3 !important;
+    caret-color: #00ffa3;
 }
