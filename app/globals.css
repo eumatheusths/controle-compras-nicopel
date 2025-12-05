@@ -1,16 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* A única regra customizada necessária: garantir o fundo base */
-body {
-  @apply bg-slate-50 text-slate-800 font-sans;
-}
-
-/* Correção para o autocomplete do Chrome não estragar o design dos inputs */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-}

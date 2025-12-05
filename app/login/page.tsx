@@ -45,7 +45,7 @@ export default function Login() {
       <div className="bg-white w-full max-w-md rounded-2xl p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-200">
         
         <div className="text-center mb-8">
-          <div className="bg-corporate-blue w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
+          <div className="bg-blue-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
             <Package className="text-white w-8 h-8" />
           </div>
           <h1 className="text-2xl font-bold text-slate-800">Acesso Nicopel</h1>
@@ -70,7 +70,7 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-corporate-blue focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400" 
+                className="w-full pl-10 p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400" 
                 placeholder="seu.nome@nicopel.com" 
               />
             </div>
@@ -85,7 +85,7 @@ export default function Login() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-corporate-blue focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400" 
+                className="w-full pl-10 p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400" 
                 placeholder="••••••••" 
               />
             </div>
@@ -96,7 +96,7 @@ export default function Login() {
             disabled={loading}
             // Botão com a cor corporativa definida no config
             className={`w-full py-3.5 rounded-xl font-bold text-white transition-all shadow-md flex items-center justify-center gap-2 mt-6 ${
-              loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-corporate-blue hover:bg-corporate-blue-dark hover:shadow-lg'
+              loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-600 dark:hover:shadow-lg'
             }`}
           >
             {loading ? (
